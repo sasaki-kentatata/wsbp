@@ -2,6 +2,7 @@ package com.example.wsbp.page;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.validation.validator.StringValidator;
 import org.wicketstuff.annotation.mount.MountPath;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -42,10 +43,38 @@ public class UserMakerPage extends WebPage {
         };
         add(userInfoForm);
 
-        var userNameField = new TextField<>("userName", userNameModel);
+        //var userNameField = new TextField<>("userName", userNameModel);
+        //userInfoForm.add(userNameField);
+
+        // 右辺の型引数 <String> を <> に省略して書いている
+        var userNameField = new TextField<>("userName", userNameModel) {
+            // onInitialize() は全てのコンポーネントに備わっている、初期化時の処理。
+            // オーバーライドするときは super.onInitialize() を忘れずに残しておく。
+            @Override
+            protected void onInitialize() {
+                super.onInitialize();
+                // 文字列の長さを8〜32文字に制限するバリデータ
+                var validator = StringValidator.lengthBetween(8, 32);
+                add(validator);
+            }
+        };
         userInfoForm.add(userNameField);
 
-        var userPassField = new PasswordTextField("userPass", userPassModel);
+        //var userPassField = new PasswordTextField("userPass", userPassModel);
+        //userInfoForm.add(userPassField);
+        // 右辺の型引数 <String> を <> に省略して書いている
+        //PasswordTextFieldの後の<>はなぜか消さないとエラーが出る
+        var userPassField = new PasswordTextField("userPass", userPassModel) {
+            // onInitialize() は全てのコンポーネントに備わっている、初期化時の処理。
+            // オーバーライドするときは super.onInitialize() を忘れずに残しておく。
+            @Override
+            protected void onInitialize() {
+                super.onInitialize();
+                // 文字列の長さを8〜32文字に制限するバリデータ
+                var validator = StringValidator.lengthBetween(8, 32);
+                add(validator);
+            }
+        };
         userInfoForm.add(userPassField);
 
     }

@@ -10,5 +10,6 @@ public interface IAuthUserRepository {
      * @return データベースの更新行数
      */
     public int insert(String userName, String userPass);
+    public int delete(String userName);
 
 }

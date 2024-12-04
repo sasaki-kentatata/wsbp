@@ -35,6 +35,9 @@ public class HomePage extends WebPage {
 
         var toUserMakerLink = new BookmarkablePageLink<>("toUserMaker", UserMakerPage.class);
         add(toUserMakerLink);
+
+        var toUserDeleteLink = new BookmarkablePageLink<>("toUserDelete", UserDeletePage.class);
+        add(toUserDeleteLink);
     }
 
 }
