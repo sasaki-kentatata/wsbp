@@ -2,6 +2,7 @@ package com.example.wsbp.page.signed;
 
 import com.example.wsbp.MySession;
 import com.example.wsbp.data.AuthUser;
+import com.example.wsbp.page.SignPage;
 import com.example.wsbp.page.UserMakerPage;
 import com.example.wsbp.service.IUserService;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
@@ -56,5 +57,8 @@ public class SignedPage extends WebPage {
 
         var toUserMakerLink = new BookmarkablePageLink<>("subject", SubjectPage.class);
         add(toUserMakerLink);
+
+        var toSignPageLink = new BookmarkablePageLink<>("sign", SignPage.class);
+        add(toSignPageLink);
     }
 }
