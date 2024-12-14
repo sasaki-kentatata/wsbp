@@ -1,11 +1,9 @@
 package com.example.wsbp.page.signed;
 
-import com.example.wsbp.MySession;
-import com.example.wsbp.data.AuthUser;
-import com.example.wsbp.page.UserMakerPage;
+import com.example.wsbp.data.Subject;
+import com.example.wsbp.page.HomePage;
 import com.example.wsbp.service.IUserService;
-import org.apache.wicket.authroles.authorization.strategies.role.Roles;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import com.giffing.wicket.spring.boot.context.scan.WicketHomePage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -15,46 +13,53 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
 
-@AuthorizeInstantiation(Roles.USER)
-@MountPath("Signed")
-public class SignedPage extends WebPage {
+@WicketHomePage
+@MountPath("SubjectPage")
+public class SubjectPage extends WebPage {
 
+    // Service を IoC/DI する
     @SpringBean
     private IUserService userService;
 
-    public SignedPage() {
-        var name = MySession.get().getUserName();
-        var userNameLabel = new Label("userName", name);
-        add(userNameLabel);
+    public SubjectPage() {
 
         // Service からデータベースのユーザ一覧をもらい、Modelにする
         // List型のモデルは Model.ofList(...) で作成する。
         // なお、DBや外部のWEB-APIなどのデータを取得する場合、通常はLoadableDetachableModelを利用する
         // 参考：https://ci.apache.org/projects/wicket/guide/9.x/single.html#_detachable_models
-        var authUsersModel = Model.ofList(userService.findAuthUsers());
+        var subjectModel = Model.ofList(userService.findSubjects());
 
         // List型のモデルを表示する ListView
-        var usersLV = new ListView<>("users", authUsersModel) {
+        var usersLV = new ListView<>("subjects", subjectModel) {
             @Override
-            protected void populateItem(ListItem<AuthUser> listItem) {
+            protected void populateItem(ListItem<Subject> listItem) {
                 // List型のモデルから、 <li>...</li> ひとつ分に分けられたモデルを取り出す
                 var itemModel = listItem.getModel();
-                var authUser = itemModel.getObject(); // 元々のListの n 番目の要素
+                var subject = itemModel.getObject(); // 元々のListの n 番目の要素
 
                 // インスタンスに入れ込まれたデータベースの検索結果を、列（＝フィールド変数）ごとにとりだして表示する
                 // add する先が listItem になることに注意。
-                var userNameModel = Model.of(authUser.getUserName());
-                var userNameLabel = new Label("userName", userNameModel);
-                listItem.add(userNameLabel);
+//                var sujectModel = Model.of(subject.getID());
+//                var idLabel = new Label("subjectID", sujectModel);
+//                listItem.add(idLabel);
 
-                var userPassModel = Model.of(authUser.getUserPass());
-                var userPassLabel = new Label("userPass", userPassModel);
-                listItem.add(userPassLabel);
+                var toUserMakerLinks = new BookmarkablePageLink<>("toLecture", LecturePage.class);
+
+                var userPassModel = Model.of(subject.getSubject_Name());
+                var sujectLabel = new Label("subjectName", userPassModel);
+                toUserMakerLinks.add(sujectLabel);
+
+//                listItem.add(sujectLabel);
+                listItem.add(toUserMakerLinks);
+
             }
         };
         add(usersLV);
 
-        var toUserMakerLink = new BookmarkablePageLink<>("subject", SubjectPage.class);
+        var toUserMakerLink = new BookmarkablePageLink<>("signedpage", SignedPage.class);
         add(toUserMakerLink);
+
+
     }
+
 }

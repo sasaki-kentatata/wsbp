@@ -16,6 +16,7 @@ import com.example.wsbp.service.IUserService;
 public class UserMakerPage extends WebPage {
 
     //IUserService を IoC/DI する
+    
     @SpringBean
     private IUserService userService;
 
