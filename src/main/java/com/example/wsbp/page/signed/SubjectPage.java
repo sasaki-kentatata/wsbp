@@ -13,6 +13,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
 
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
 @WicketHomePage
 @MountPath("SubjectPage")
 public class SubjectPage extends WebPage {
@@ -39,18 +41,22 @@ public class SubjectPage extends WebPage {
 
                 // インスタンスに入れ込まれたデータベースの検索結果を、列（＝フィールド変数）ごとにとりだして表示する
                 // add する先が listItem になることに注意。
-//                var sujectModel = Model.of(subject.getID());
-//                var idLabel = new Label("subjectID", sujectModel);
-//                listItem.add(idLabel);
 
-                var toUserMakerLinks = new BookmarkablePageLink<>("toLecture", LecturePage.class);
+                PageParameters parameters = new PageParameters();
+                parameters.add("subject_name", subject.getSubject_Name()); // 科目名を設定
+                parameters.add("subject_id", subject.getID());
 
-                var userPassModel = Model.of(subject.getSubject_Name());
-                var sujectLabel = new Label("subjectName", userPassModel);
-                toUserMakerLinks.add(sujectLabel);
+//                var idModel = Model.of(subject.getID());
+//                var idLabel = new Label("subjectID", idModel);
+////                listItem.add(idLabel);
+
+                var toLectureLink = new BookmarkablePageLink<>("toLecture", LecturePage.class,parameters);
+                var subjectModel = Model.of(subject.getSubject_Name());
+                var sujectLabel = new Label("subjectName", subjectModel);
+                toLectureLink.add(sujectLabel);
 
 //                listItem.add(sujectLabel);
-                listItem.add(toUserMakerLinks);
+                listItem.add(toLectureLink);
 
             }
         };

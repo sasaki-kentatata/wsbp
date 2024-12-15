@@ -1,7 +1,15 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <head></head>
 <body>
+<h2><span wicket:id="subject_name">subject_name</span>の講義一覧</h2>
 <p>Hello!</p>
+<ol>
+    <li wicket:id="lectures">第
+        <span wicket:id="lecture_serial_num"></span>回
+        <br>
+        <span wicket:id="detail"></span>
+    </li>
+</ol>
 <div><a href="#" wicket:id="toSubject">科目一覧に戻る</a></div>
 </body>
 </html>
