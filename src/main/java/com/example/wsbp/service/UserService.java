@@ -2,10 +2,9 @@ package com.example.wsbp.service;
 
 import com.example.wsbp.data.AuthUser;
 import com.example.wsbp.data.Lecture;
+import com.example.wsbp.data.Lecture_detail;
 import com.example.wsbp.data.Subject;
-import com.example.wsbp.repository.IAuthUserRepository;
-import com.example.wsbp.repository.ILectureRepository;
-import com.example.wsbp.repository.ISubjectRepository;
+import com.example.wsbp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping;
@@ -19,13 +18,15 @@ public class UserService implements IUserService {
     private IAuthUserRepository authUserRepos;
     private ISubjectRepository subjectRepos;
     private ILectureRepository lectureRepos;
+    private ILecture_detailRepository lecture_detailRepos;
 
     @Autowired
-    public UserService(IAuthUserRepository authUserRepos, ISubjectRepository subjectRepos, ILectureRepository lectureRepos, BeanNameUrlHandlerMapping beanNameUrlHandlerMapping) {
+    public UserService(IAuthUserRepository authUserRepos, ISubjectRepository subjectRepos, ILectureRepository lectureRepos, ILecture_detailRepository lecture_detailRepos, BeanNameUrlHandlerMapping beanNameUrlHandlerMapping) {
         this.authUserRepos = authUserRepos;
         this.subjectRepos = subjectRepos;
         this.lectureRepos = lectureRepos;
         this.beanNameUrlHandlerMapping = beanNameUrlHandlerMapping;
+        this.lecture_detailRepos = lecture_detailRepos;
     }
 
     @Override
@@ -68,8 +69,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<Lecture> finddetail(String num) {
-        var lectures = lectureRepos.finddetail(num);
+    public List<Lecture_detail> finddetail(String num) {
+        var lectures = lecture_detailRepos.finddetails(num);
         System.out.println("データ件数：" + lectures.size());
         return lectures;
     }

@@ -1,13 +1,14 @@
 package com.example.wsbp.repository;
 
 import com.example.wsbp.data.Lecture;
+import com.example.wsbp.data.Lecture_detail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+//データベースのLectureから全ての情報を取得する　今回は使用しない
 @Repository
 public class LectureRepository implements ILectureRepository {
 
@@ -36,10 +37,10 @@ public class LectureRepository implements ILectureRepository {
         return lectures;
     }
 
-    @Override
-    public List<Lecture> finddetail(String num){
-        String sql = "select lecture_serial_num,detail from lecture where subject_id = num";
-        List<Lecture> lecture = jdbc.query(sql,DataClassRowMapper.newInstance(Lecture.class));
-        return lecture;
-    }
+//    @Override
+//    public List<Lecture_detail> finddetail(String num){
+//        String sql = "select lecture_serial_num,detail from lecture where subject_id = ?";
+//        List<Lecture_detail> lecture = jdbc.query(sql,DataClassRowMapper.newInstance(Lecture_detail.class));
+//        return lecture;
+//    }
 }

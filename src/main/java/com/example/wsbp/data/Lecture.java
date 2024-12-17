@@ -1,8 +1,8 @@
 package com.example.wsbp.data;
 
 import java.io.Serializable;
-
-// AUTH_USER テーブルのデータを入れるクラス
+//データベースのLectureから全ての情報を取得する　今回は使用しない
+// lecture テーブルのデータを入れるクラス
 // Wicketの Model に使うかもしれないクラスは、 implements Serializable をつける
 public class Lecture implements Serializable {
 
