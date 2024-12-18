@@ -36,6 +36,7 @@ public class LecturePage extends WebPage {
         var toUserMakerLinks = new BookmarkablePageLink<>("toSubject", SubjectPage.class);
         add(toUserMakerLinks);
 
+
 //        //講義のデータベースの情報を全て表示する
 //
 //        var lecturesModel = Model.ofList(userService.findLectures());
@@ -90,6 +91,23 @@ public class LecturePage extends WebPage {
                     var detailLabel = new Label("detail", detailModel);
                     listItem.add(detailLabel);
 
+                    //出席状況を表示する　- or 〇
+                    String state;
+                    String n ;
+                    if (Integer.parseInt(authUser.getlecture_serial_Num()) <= 3){
+                        n = null;
+                    }else {
+                        n = "attend";
+                    }
+                    if (n == null) {
+                        state = "-";
+                    }else{
+                        state = "〇";
+                    }
+                    var attendanceModel = Model.of(state);
+                    var attendanceLabel = new Label("attendance", attendanceModel);
+                    listItem.add(attendanceLabel);
+
                 }
             };
             add(usersLV);
@@ -97,6 +115,17 @@ public class LecturePage extends WebPage {
             System.out.println("引数が違います");
             e.printStackTrace();
         }
+
+        //条件によって表示方法を変える
+//        String n;
+//        int i = 1;
+//        if (i == 1){
+//            n = "test";
+//        }else{
+//            n = "";
+//        }
+//        var testLabel = new Label("test", n);
+//        add(testLabel);
     }
 
 }
