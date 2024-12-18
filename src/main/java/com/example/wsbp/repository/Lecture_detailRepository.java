@@ -24,7 +24,7 @@ public class Lecture_detailRepository implements ILecture_detailRepository {
 
     @Override
     public List<Lecture_detail> finddetails(String num){
-        String sql = "select lecture_serial_num,detail from lecture where subject_id = ?";
+        String sql = "select id, lecture_serial_num, detail from lecture where subject_id = ?";
 
         List<Lecture_detail> lecture = jdbc.query(sql,DataClassRowMapper.newInstance(Lecture_detail.class),num);
         return lecture;

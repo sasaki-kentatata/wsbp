@@ -9,11 +9,13 @@ public class Lecture_detail implements Serializable {
     // auth_userテーブルのuser_pass列のデータ
     private final String lecture_serial_Num;
     private final String Detail;
+    private final String iD;
 
-    public Lecture_detail(String lecture_serial_Num, String Detail) {
+    public Lecture_detail(String iD,String lecture_serial_Num, String Detail) {
 
         this.lecture_serial_Num = lecture_serial_Num;
         this.Detail = Detail;
+        this.iD = iD;
     }
 
     public String getlecture_serial_Num() {
@@ -23,6 +25,8 @@ public class Lecture_detail implements Serializable {
     public String getDetail() {
         return Detail;
     }
+
+    public String getlecture_id() {return iD;}
 
     @Override
     public boolean equals(Object o) {

@@ -108,6 +108,10 @@ public class LecturePage extends WebPage {
                     var attendanceLabel = new Label("attendance", attendanceModel);
                     listItem.add(attendanceLabel);
 
+                    var testModel = Model.of(authUser.getlecture_id());
+                    var testLabel = new Label("test", testModel);
+                    listItem.add(testLabel);
+
                 }
             };
             add(usersLV);
