@@ -80,7 +80,6 @@ public class LecturePage extends WebPage {
                     var itemModel = listItem.getModel();
                     var authUser = itemModel.getObject(); // 元々のListの n 番目の要素
 
-
                     // インスタンスに入れ込まれたデータベースの検索結果を、列（＝フィールド変数）ごとにとりだして表示する
                     // add する先が listItem になることに注意。
                     var serial_numModel = Model.of(authUser.getlecture_serial_Num());
@@ -108,10 +107,21 @@ public class LecturePage extends WebPage {
                     var attendanceLabel = new Label("attendance", attendanceModel);
                     listItem.add(attendanceLabel);
 
+                    //lecture_idを表示
                     var testModel = Model.of(authUser.getlecture_id());
                     var testLabel = new Label("test", testModel);
                     listItem.add(testLabel);
 
+                    //var lecturepassModel = Model.ofList(userService.findpass(authUser.getlecture_serial_Num()));
+                    var lecturespass = userService.findpass(authUser.getlecture_id());
+                    String non = "パスワードなし";
+                    if (!lecturespass.isEmpty()) {
+                        var aLabel = new Label("pass", lecturespass.getFirst().getlecture_Password());
+                        listItem.add(aLabel);
+                    } else {
+                        var aLabel = new Label("pass", non);
+                        listItem.add(aLabel);
+                    }
                 }
             };
             add(usersLV);

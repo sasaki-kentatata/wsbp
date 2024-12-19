@@ -1,9 +1,6 @@
 package com.example.wsbp.service;
 
-import com.example.wsbp.data.AuthUser;
-import com.example.wsbp.data.Lecture;
-import com.example.wsbp.data.Lecture_detail;
-import com.example.wsbp.data.Subject;
+import com.example.wsbp.data.*;
 import com.example.wsbp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,14 +16,16 @@ public class UserService implements IUserService {
     private ISubjectRepository subjectRepos;
     private ILectureRepository lectureRepos;
     private ILecture_detailRepository lecture_detailRepos;
+    private ILecture_passwordRepository lecture_passwordRepos;
 
     @Autowired
-    public UserService(IAuthUserRepository authUserRepos, ISubjectRepository subjectRepos, ILectureRepository lectureRepos, ILecture_detailRepository lecture_detailRepos, BeanNameUrlHandlerMapping beanNameUrlHandlerMapping) {
+    public UserService(IAuthUserRepository authUserRepos, ISubjectRepository subjectRepos, ILectureRepository lectureRepos, ILecture_detailRepository lecture_detailRepos,Lecture_passwordRepository lecture_passwordRepos, BeanNameUrlHandlerMapping beanNameUrlHandlerMapping) {
         this.authUserRepos = authUserRepos;
         this.subjectRepos = subjectRepos;
         this.lectureRepos = lectureRepos;
         this.beanNameUrlHandlerMapping = beanNameUrlHandlerMapping;
         this.lecture_detailRepos = lecture_detailRepos;
+        this.lecture_passwordRepos = lecture_passwordRepos;
     }
 
     @Override
@@ -71,6 +70,13 @@ public class UserService implements IUserService {
     @Override
     public List<Lecture_detail> finddetail(String num) {
         var lectures = lecture_detailRepos.finddetails(num);
+        System.out.println("データ件数：" + lectures.size());
+        return lectures;
+    }
+
+    @Override
+    public List<Lecture_password> findpass(String num) {
+        var lectures = lecture_passwordRepos.findpass(num);
         System.out.println("データ件数：" + lectures.size());
         return lectures;
     }

@@ -1,9 +1,6 @@
 package com.example.wsbp.service;
 
-import com.example.wsbp.data.AuthUser;
-import com.example.wsbp.data.Lecture;
-import com.example.wsbp.data.Lecture_detail;
-import com.example.wsbp.data.Subject;
+import com.example.wsbp.data.*;
 
 import java.util.List;
 
@@ -31,4 +28,5 @@ public interface IUserService {
 
     public List<Lecture> findLectures();
     public List<Lecture_detail> finddetail(String num);
+    public List<Lecture_password> findpass(String num);
 }
