@@ -29,4 +29,6 @@ public interface IUserService {
     public List<Lecture> findLectures();
     public List<Lecture_detail> finddetail(String num);
     public List<Lecture_password> findpass(String num);
+    public boolean exsitpass(String lecture_id,String username);
+    public void insertpass(String lecture_iD,String userName);
 }

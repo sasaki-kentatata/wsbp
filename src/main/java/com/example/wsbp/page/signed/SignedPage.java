@@ -16,6 +16,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.annotation.mount.MountPath;
 
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
 @AuthorizeInstantiation(Roles.USER)
 @MountPath("Signed")
 public class SignedPage extends WebPage {
@@ -27,6 +29,9 @@ public class SignedPage extends WebPage {
         var name = MySession.get().getUserName();
         var userNameLabel = new Label("userName", name);
         add(userNameLabel);
+
+        PageParameters parameters = new PageParameters();
+        parameters.add("username", name); // 科目名を設定
 
         // Service からデータベースのユーザ一覧をもらい、Modelにする
         // List型のモデルは Model.ofList(...) で作成する。
@@ -55,7 +60,7 @@ public class SignedPage extends WebPage {
         };
         add(usersLV);
 
-        var toUserMakerLink = new BookmarkablePageLink<>("subject", SubjectPage.class);
+        var toUserMakerLink = new BookmarkablePageLink<>("subject", SubjectPage.class,parameters);
         add(toUserMakerLink);
 
         var toSignPageLink = new BookmarkablePageLink<>("sign", SignPage.class);

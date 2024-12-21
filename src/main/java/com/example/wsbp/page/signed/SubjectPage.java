@@ -19,11 +19,15 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 @MountPath("SubjectPage")
 public class SubjectPage extends WebPage {
 
+
     // Service を IoC/DI する
     @SpringBean
     private IUserService userService;
 
-    public SubjectPage() {
+    public SubjectPage(PageParameters parameters) {
+        super(parameters);
+
+        String Name = parameters.get("username").toString("不明な名前");
 
         // Service からデータベースのユーザ一覧をもらい、Modelにする
         // List型のモデルは Model.ofList(...) で作成する。
@@ -45,6 +49,7 @@ public class SubjectPage extends WebPage {
                 PageParameters parameters = new PageParameters();
                 parameters.add("subject_name", subject.getSubject_Name()); // 科目名を設定
                 parameters.add("subject_id", subject.getID());
+                parameters.add("Username",Name);
 
 //                var idModel = Model.of(subject.getID());
 //                var idLabel = new Label("subjectID", idModel);

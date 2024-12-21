@@ -17,15 +17,17 @@ public class UserService implements IUserService {
     private ILectureRepository lectureRepos;
     private ILecture_detailRepository lecture_detailRepos;
     private ILecture_passwordRepository lecture_passwordRepos;
+    private ILecture_attendanceRepository lecture_attendanceRepos;
 
     @Autowired
-    public UserService(IAuthUserRepository authUserRepos, ISubjectRepository subjectRepos, ILectureRepository lectureRepos, ILecture_detailRepository lecture_detailRepos,Lecture_passwordRepository lecture_passwordRepos, BeanNameUrlHandlerMapping beanNameUrlHandlerMapping) {
+    public UserService(IAuthUserRepository authUserRepos, ISubjectRepository subjectRepos, ILectureRepository lectureRepos, ILecture_detailRepository lecture_detailRepos,Lecture_passwordRepository lecture_passwordRepos,ILecture_attendanceRepository lecture_attendanceRepos, BeanNameUrlHandlerMapping beanNameUrlHandlerMapping) {
         this.authUserRepos = authUserRepos;
         this.subjectRepos = subjectRepos;
         this.lectureRepos = lectureRepos;
         this.beanNameUrlHandlerMapping = beanNameUrlHandlerMapping;
         this.lecture_detailRepos = lecture_detailRepos;
         this.lecture_passwordRepos = lecture_passwordRepos;
+        this.lecture_attendanceRepos = lecture_attendanceRepos;
     }
 
     @Override
@@ -79,5 +81,18 @@ public class UserService implements IUserService {
         var lectures = lecture_passwordRepos.findpass(num);
         System.out.println("データ件数：" + lectures.size());
         return lectures;
+    }
+
+    @Override
+    public boolean exsitpass(String lecture_id,String username){
+        var result = lecture_attendanceRepos.exsitpass(lecture_id,username);
+        System.out.println(lecture_id + ", " + username + " のユーザ照合結果：" + result);
+        return result;
+    }
+
+    @Override
+    public void insertpass(String lecture_iD,String userName){
+        int n = authUserRepos.insert(lecture_iD, userName);
+        System.out.println("記録行数：" + n);
     }
 }

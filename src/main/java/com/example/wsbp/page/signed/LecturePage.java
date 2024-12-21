@@ -1,19 +1,31 @@
 package com.example.wsbp.page.signed;
 
+import com.example.wsbp.MySession;
 import com.example.wsbp.data.Lecture_detail;
 import com.example.wsbp.data.Lecture;
+import com.example.wsbp.page.HomePage;
+import com.example.wsbp.page.UserMakerCompPage;
 import com.example.wsbp.service.IUserService;
+import com.example.wsbp.service.UserService;
 import com.giffing.wicket.spring.boot.context.scan.WicketHomePage;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.StringValidator;
 import org.wicketstuff.annotation.mount.MountPath;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.Model;
 
 @WicketHomePage
 @MountPath("LecturePage")
@@ -25,16 +37,22 @@ public class LecturePage extends WebPage {
     public LecturePage(PageParameters parameters) {
         super(parameters);
 
+
         // パラメータから値を取得
         String subjectName = parameters.get("subject_name").toString("不明な科目");
         String subjectId = parameters.get("subject_id").toString("不明なID");
 //        int subjectId = Integer.parseInt(parameters.get("subject_id").toString());
+        String name = parameters.get("Username").toString("不明な名前");
+
 
         var SubjectLabel = new Label("subject_name", subjectName);
         add(SubjectLabel);
 
-        var toUserMakerLinks = new BookmarkablePageLink<>("toSubject", SubjectPage.class);
+        var toUserMakerLinks = new BookmarkablePageLink<>("toSubject", SignedPage.class);
         add(toUserMakerLinks);
+
+        var userNameLabel = new Label("nametest", name);
+        add(userNameLabel);
 
 
 //        //講義のデータベースの情報を全て表示する
@@ -90,18 +108,12 @@ public class LecturePage extends WebPage {
                     var detailLabel = new Label("detail", detailModel);
                     listItem.add(detailLabel);
 
-                    //出席状況を表示する　- or 〇
+                    //出席状況を表示する　- or 〇 lecture_attendanceにユーザ情報があれば〇なければ-
                     String state;
-                    String n ;
-                    if (Integer.parseInt(authUser.getlecture_serial_Num()) <= 3){
-                        n = null;
-                    }else {
-                        n = "attend";
-                    }
-                    if (n == null) {
-                        state = "-";
-                    }else{
+                    if (userService.exsitpass(authUser.getlecture_id(),name)) {
                         state = "〇";
+                    }else{
+                        state = "-";
                     }
                     var attendanceModel = Model.of(state);
                     var attendanceLabel = new Label("attendance", attendanceModel);
@@ -112,16 +124,66 @@ public class LecturePage extends WebPage {
                     var testLabel = new Label("test", testModel);
                     listItem.add(testLabel);
 
-                    //var lecturepassModel = Model.ofList(userService.findpass(authUser.getlecture_serial_Num()));
-                    var lecturespass = userService.findpass(authUser.getlecture_id());
+                    var lecturespass = userService.findpass(authUser.getlecture_id()); //設定されているパスワードをリストで取得　ない場合は[]になる
                     String non = "パスワードなし";
-                    if (!lecturespass.isEmpty()) {
-                        var aLabel = new Label("pass", lecturespass.getFirst().getlecture_Password());
-                        listItem.add(aLabel);
+                    if (!lecturespass.isEmpty()) { //パスワードが設定されているかの調査
+                        if(userService.exsitpass(authUser.getlecture_id(),name)){ //パスワードが登録されているかのチェック
+                            var aLabel = new Label("pass", "");
+                            listItem.add(aLabel);
+                        }else{
+                            var aLabel = new Label("pass", lecturespass.getFirst().getlecture_Password());
+                            listItem.add(aLabel);
+                        }
                     } else {
-                        var aLabel = new Label("pass", non);
+                        var aLabel = new Label("pass", "");
                         listItem.add(aLabel);
                     }
+
+                    try{
+                        //フォームの作成
+                        Form<?> passwordForm = new Form<>("passwordform");
+                        passwordForm.setOutputMarkupId(true);// Ajax更新を可能にする
+
+                        // パスワード入力フィールド
+                        Model<String> passwordModel = Model.of("");
+                        PasswordTextField passwordTextField = new PasswordTextField("password", passwordModel);
+                        passwordTextField.setRequired(true);
+                        passwordTextField.add(StringValidator.exactLength(4));
+                        passwordForm.add(passwordTextField);
+
+                        // ラベル（Ajaxで更新可能）
+                        Label pass = new Label("inputpass", Model.of("-"));
+                        pass.setOutputMarkupId(true);// Ajax更新を可能にする
+                        passwordForm.add(pass);
+
+                        // Ajaxボタン
+                        AjaxButton submitButton = new AjaxButton("submit", passwordForm) {
+                            @Override
+                            protected void onSubmit(AjaxRequestTarget target) {
+                                String password = passwordTextField.getModelObject();
+                                if (lecturespass != null && password.equals(lecturespass.getFirst().getlecture_Password())) {
+                                    pass.setDefaultModelObject("パスワード一致");
+                                    passwordTextField.setVisible(false);// フォームを非表示
+                                    this.setVisible(false); // 送信ボタンを非表示に
+
+                                } else {
+                                    pass.setDefaultModelObject("パスワードが違います");
+                                }
+                                target.add(pass,passwordForm,this);// ラベルとフォームをAjax更新
+                            }
+                            @Override
+                            protected void onError(AjaxRequestTarget target){
+                                super.onError(target);
+                            }
+                        };
+                        submitButton.setOutputMarkupId(true);// Ajax更新可能に
+                        passwordForm.add(submitButton);
+                        listItem.add(passwordForm);
+                    }catch(Exception e){
+                        System.out.println("dddddddddddddddddddddddddddddd");
+                        e.printStackTrace();
+                    }
+
                 }
             };
             add(usersLV);
