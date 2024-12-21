@@ -119,29 +119,38 @@ public class LecturePage extends WebPage {
                     var attendanceLabel = new Label("attendance", attendanceModel);
                     listItem.add(attendanceLabel);
 
-                    //lecture_idを表示
-                    var testModel = Model.of(authUser.getlecture_id());
-                    var testLabel = new Label("test", testModel);
-                    listItem.add(testLabel);
+//                    //lecture_idを表示
+//                    var testModel = Model.of(authUser.getlecture_id());
+//                    var testLabel = new Label("test", testModel);
+//                    listItem.add(testLabel);
 
                     var lecturespass = userService.findpass(authUser.getlecture_id()); //設定されているパスワードをリストで取得　ない場合は[]になる
-                    String non = "パスワードなし";
+                    String non ;
+                    boolean showForm = (!lecturespass.isEmpty() &&  !(userService.exsitpass(authUser.getlecture_id(),name)));
+                    if(showForm){
+                        non = "パスワードあります";
+                    }else{
+                        non = "パスワードありません";
+                    }
                     if (!lecturespass.isEmpty()) { //パスワードが設定されているかの調査
                         if(userService.exsitpass(authUser.getlecture_id(),name)){ //パスワードが登録されているかのチェック
-                            var aLabel = new Label("pass", "");
+                            var aLabel = new Label("pass", "パスワード入力済み");
                             listItem.add(aLabel);
                         }else{
                             var aLabel = new Label("pass", lecturespass.getFirst().getlecture_Password());
                             listItem.add(aLabel);
                         }
                     } else {
-                        var aLabel = new Label("pass", "");
+                        var aLabel = new Label("pass", non);
                         listItem.add(aLabel);
                     }
 
                     try{
                         //フォームの作成
                         Form<?> passwordForm = new Form<>("passwordform");
+                        //boolean shouldHideForm = true; // 非表示にする条件をここで指定
+                        passwordForm.setVisible(showForm);
+
                         passwordForm.setOutputMarkupId(true);// Ajax更新を可能にする
 
                         // パスワード入力フィールド
@@ -152,7 +161,7 @@ public class LecturePage extends WebPage {
                         passwordForm.add(passwordTextField);
 
                         // ラベル（Ajaxで更新可能）
-                        Label pass = new Label("inputpass", Model.of("-"));
+                        Label pass = new Label("inputpass", Model.of("パスワード入力できます"));
                         pass.setOutputMarkupId(true);// Ajax更新を可能にする
                         passwordForm.add(pass);
 
@@ -161,10 +170,11 @@ public class LecturePage extends WebPage {
                             @Override
                             protected void onSubmit(AjaxRequestTarget target) {
                                 String password = passwordTextField.getModelObject();
-                                if (lecturespass != null && password.equals(lecturespass.getFirst().getlecture_Password())) {
+                                if (password.equals(lecturespass.getFirst().getlecture_Password())) {
                                     pass.setDefaultModelObject("パスワード一致");
                                     passwordTextField.setVisible(false);// フォームを非表示
                                     this.setVisible(false); // 送信ボタンを非表示に
+                                    userService.insertpass(authUser.getlecture_id(),name);
 
                                 } else {
                                     pass.setDefaultModelObject("パスワードが違います");
@@ -180,7 +190,7 @@ public class LecturePage extends WebPage {
                         passwordForm.add(submitButton);
                         listItem.add(passwordForm);
                     }catch(Exception e){
-                        System.out.println("dddddddddddddddddddddddddddddd");
+                        System.out.println("パスワード入力に失敗しました");
                         e.printStackTrace();
                     }
 

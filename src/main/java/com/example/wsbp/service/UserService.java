@@ -92,7 +92,7 @@ public class UserService implements IUserService {
 
     @Override
     public void insertpass(String lecture_iD,String userName){
-        int n = authUserRepos.insert(lecture_iD, userName);
+        int n = lecture_attendanceRepos.insertpass(lecture_iD, userName);
         System.out.println("記録行数：" + n);
     }
 }
