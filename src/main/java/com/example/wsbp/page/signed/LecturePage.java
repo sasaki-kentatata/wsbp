@@ -1,6 +1,5 @@
 package com.example.wsbp.page.signed;
 
-import com.example.wsbp.MySession;
 import com.example.wsbp.data.Lecture_detail;
 import com.example.wsbp.data.Lecture;
 import com.example.wsbp.page.HomePage;
@@ -51,9 +50,6 @@ public class LecturePage extends WebPage {
         var toUserMakerLinks = new BookmarkablePageLink<>("toSubject", SignedPage.class);
         add(toUserMakerLinks);
 
-        var userNameLabel = new Label("nametest", name);
-        add(userNameLabel);
-
 
 //        //講義のデータベースの情報を全て表示する
 //
@@ -86,7 +82,7 @@ public class LecturePage extends WebPage {
 //            }
 //        };
 
-//        [目標]講義の説明を科目別に表示するとしないでわける。以下のコードは送られてきた科目IDを使ってソートするようにするもの
+//        講義の説明を科目別に表示するとしないでわける。以下のコードは送られてきた科目IDを使ってソートするようにするもの
 
         try{
             var lecturesModel = Model.ofList(userService.finddetail(subjectId));
@@ -201,17 +197,6 @@ public class LecturePage extends WebPage {
             System.out.println("引数が違います");
             e.printStackTrace();
         }
-
-        //条件によって表示方法を変える
-//        String n;
-//        int i = 1;
-//        if (i == 1){
-//            n = "test";
-//        }else{
-//            n = "";
-//        }
-//        var testLabel = new Label("test", n);
-//        add(testLabel);
     }
 
 }

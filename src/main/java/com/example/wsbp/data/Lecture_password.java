@@ -2,13 +2,13 @@ package com.example.wsbp.data;
 
 import java.io.Serializable;
 
-//データベースのLectureから全ての情報を取得する　今回は使用しない
-// lecture テーブルのデータを入れるクラス
+//データベースのlecture_passwordから全ての情報を取得する　今回は使用しない
+// lecture_password テーブルのデータを入れるクラス
 // Wicketの Model に使うかもしれないクラスは、 implements Serializable をつける
 public class Lecture_password implements Serializable {
 
-//    private final String lecture_iD;  // auth_userテーブルのuser_name列のデータ
-    private final String lecture_Password;// auth_userテーブルのuser_pass列のデータ
+//    private final String lecture_iD;  // lecture_passwordテーブルのlecture_id列のデータ
+    private final String lecture_Password;// lecture_passwordテーブルのlecture_pass列のデータ
 
     public Lecture_password( String lecture_Password) {
 //        this.lecture_iD = lecture_iD; String lecture_iD,

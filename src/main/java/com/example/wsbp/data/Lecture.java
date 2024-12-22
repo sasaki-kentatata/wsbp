@@ -6,10 +6,10 @@ import java.io.Serializable;
 // Wicketの Model に使うかもしれないクラスは、 implements Serializable をつける
 public class Lecture implements Serializable {
 
-    private final String iD;  // auth_userテーブルのuser_name列のデータ
-    private final String subject_iD;// auth_userテーブルのuser_pass列のデータ
-    private final String lecture_serial_Num;
-    private final String Detail;
+    private final String iD;  // lectureテーブルのid列のデータ
+    private final String subject_iD;// lectureテーブルのsubject_id列のデータ
+    private final String lecture_serial_Num;// lectureテーブルのlecture_serial_num列のデータ
+    private final String Detail;// lectureテーブルのdetail列のデータ
 
     public Lecture(String iD, String subject_iD, String lecture_serial_Num, String Detail) {
         this.iD = iD;

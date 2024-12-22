@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.io.Serializable;
 
-// AUTH_USER テーブルのデータを入れるクラス
+// subject テーブルのデータを入れるクラス
 // Wicketの Model に使うかもしれないクラスは、 implements Serializable をつける
 public class Subject implements Serializable {
 
-    private final String ID;  // auth_userテーブルのuser_name列のデータ
-    private final String Subject_Name;  // auth_userテーブルのuser_pass列のデータ
+    private final String ID;  // subjectテーブルのid列のデータ
+    private final String Subject_Name;  // subjectテーブルのsubject_name列のデータ
 
     public Subject(String ID, String Subject_Name) {
         this.ID = ID;
