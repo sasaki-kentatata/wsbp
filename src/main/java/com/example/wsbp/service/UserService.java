@@ -18,9 +18,13 @@ public class UserService implements IUserService {
     private ILecture_detailRepository lecture_detailRepos;
     private ILecture_passwordRepository lecture_passwordRepos;
     private ILecture_attendanceRepository lecture_attendanceRepos;
+    private IChatRepository chatRepos;
 
     @Autowired
-    public UserService(IAuthUserRepository authUserRepos, ISubjectRepository subjectRepos, ILectureRepository lectureRepos, ILecture_detailRepository lecture_detailRepos,Lecture_passwordRepository lecture_passwordRepos,ILecture_attendanceRepository lecture_attendanceRepos, BeanNameUrlHandlerMapping beanNameUrlHandlerMapping) {
+    public UserService(IAuthUserRepository authUserRepos, ISubjectRepository subjectRepos, ILectureRepository lectureRepos,
+                       ILecture_detailRepository lecture_detailRepos,Lecture_passwordRepository lecture_passwordRepos,
+                       ILecture_attendanceRepository lecture_attendanceRepos, BeanNameUrlHandlerMapping beanNameUrlHandlerMapping,
+                       IChatRepository chatRepos) {
         this.authUserRepos = authUserRepos;
         this.subjectRepos = subjectRepos;
         this.lectureRepos = lectureRepos;
@@ -28,6 +32,7 @@ public class UserService implements IUserService {
         this.lecture_detailRepos = lecture_detailRepos;
         this.lecture_passwordRepos = lecture_passwordRepos;
         this.lecture_attendanceRepos = lecture_attendanceRepos;
+        this.chatRepos = chatRepos;
     }
 
     @Override
@@ -93,6 +98,17 @@ public class UserService implements IUserService {
     @Override
     public void insertpass(String lecture_iD,String userName){
         int n = lecture_attendanceRepos.insertpass(lecture_iD, userName);
+        System.out.println("記録行数：" + n);
+    }
+
+    public List<Chat> findmsg(){
+        var chats = chatRepos.findmsg();
+        System.out.println("データ件数：" + chats.size());
+        return chats;
+    }
+
+    public void registpost(String userName, String userMsg){
+        int n = chatRepos.insertmsg(userName, userMsg);
         System.out.println("記録行数：" + n);
     }
 }

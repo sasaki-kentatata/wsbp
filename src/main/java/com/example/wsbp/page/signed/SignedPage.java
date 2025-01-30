@@ -63,6 +63,9 @@ public class SignedPage extends WebPage {
         var toUserMakerLink = new BookmarkablePageLink<>("subject", SubjectPage.class,parameters);
         add(toUserMakerLink);
 
+        var toChatLink = new BookmarkablePageLink<>("chats", ChatPage.class);
+        add(toChatLink);
+
         var toSignPageLink = new BookmarkablePageLink<>("sign", SignPage.class);
         add(toSignPageLink);
     }

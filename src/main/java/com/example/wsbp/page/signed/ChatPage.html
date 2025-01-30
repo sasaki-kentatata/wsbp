@@ -1,0 +1,24 @@
+<html xmlns:wicket="http://wicket.apache.org" xmlns="http://www.w3.org/1999/html">
+<head></head>
+<body>
+<h2>チャット</h2>
+<ul>
+    <li wicket:id="chat">
+        <p><span wicket:id="post_name"></span> :
+        <span wicket:id="post_content"></span></p>
+    </li>
+</ul>
+<p>--------------------------------------------</p>
+<h3>投稿欄</h3>
+<form action="#" wicket:id="post">
+    <p>投稿名</p>
+    <div><input type="text" wicket:id="userName"/></div>
+    <p>投稿内容</p>
+    <div><input type="text" wicket:id="userMsg"/></div>
+    <div>
+        <button type="submit">送信</button>
+    </div>
+</form>
+<div><a href="#" wicket:id="toSingedPage">戻る</a></div>
+</body>
+</html>
